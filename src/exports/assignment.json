@@ -1,0 +1,43 @@
+{
+ "mssv": "2A202603194",
+ "ten": "DaoQuangTuan",
+ "pool_version": "d04-k5-v2",
+ "cvat_user": "admin",
+ "project": "d04-keypoint",
+ "persons": [
+  "000000156069.jpg",
+  "000000261732.jpg",
+  "000000294329.jpg",
+  "000000336477.jpg",
+  "000000558066.jpg",
+  "000000090646.jpg",
+  "000000302102.jpg",
+  "000000467300.jpg",
+  "000000391222.jpg",
+  "000000518966.jpg",
+  "000000106051.jpg",
+  "000000381889.jpg"
+ ],
+ "faces": [
+  "face_300399.jpg",
+  "face_3348.jpg",
+  "face_469647.jpg",
+  "face_223746.jpg",
+  "face_416730.jpg",
+  "face_249336.jpg",
+  "face_219250.jpg",
+  "face_562485.jpg"
+ ],
+ "tasks": {
+  "persons": {
+   "task_id": 12,
+   "job_id": 12,
+   "task_name": "persons-DaoQuangTuan"
+  },
+  "faces": {
+   "task_id": 13,
+   "job_id": 13,
+   "task_name": "faces-DaoQuangTuan"
+  }
+ }
+}
