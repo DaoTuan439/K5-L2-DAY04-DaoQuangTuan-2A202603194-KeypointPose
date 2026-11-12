@@ -163,9 +163,44 @@ Nguồn ảnh: COCO val2017 / Wikimedia Commons.
 
 ## Bonus (nếu làm)
 
-Không làm bonus.
+Làm **B1** và **B2** (task `persons-extra-DaoQuangTuan`, `faces-extra-DaoQuangTuan`). File: `src/exports/DaoQuangTuan_bonus_persons.zip`, `src/exports/DaoQuangTuan_bonus_faces.zip`.
+
+### B1 — 3 ảnh người khó
+
+| Ảnh | Số skeleton | Ca khó | Cách xử lý |
+|---|---:|---|---|
+| 000000188948 | 3 | 1 người quay lưng ở gần camera, mất chân dưới khung; 2 người đứng nghiêng chồng lên nhau, người áo đỏ bị che gần hết | Người quay lưng: `left_*` bên trái ảnh, cổ chân ngoài khung → `O`; người nghiêng nhìn sang phải ảnh → gán phía phải (phía gần camera), phía xa → `O` |
+| 000000213506 | 2 | Hai người chồng nhau: bé gái quay lưng đứng che chị áo đen đứng nghiêng | Bé gái: quay lưng; chị áo đen: nhìn về trái ảnh nên bên trái là bên gần camera |
+| 000000323525 | 3 | Trọng tài và bắt bóng ngồi xổm chồng lên nhau, người nhỏ (~80–140 px), lưới che phía trước | Cả 3 người quay lưng về camera → `left_*` bên trái ảnh; khớp bị người kia che → `Q` |
+
+Kết quả tự kiểm (`python src/check_submission.py --persons ...bonus_persons.zip --faces ...bonus_faces.zip --expected-person-images 3 --expected-face-images 5`):
+
+```
+- File person: DaoQuangTuan_bonus_persons.zip
+  Số ảnh: 3 · số skeleton `person`: 8 · mỗi annotation 51 số
+  Skeleton theo ảnh: 000000188948=3, 000000213506=2, 000000323525=3
+  Cờ v: v=2 81 (60%) · v=1 8 (6%) · v=0 47 (35%)
+- File face: DaoQuangTuan_bonus_faces.zip
+  Số ảnh: 5 · số skeleton `face`: 5 · mỗi annotation 39 số
+  Cờ v: v=2 63 (97%) · v=1 2 (3%) · v=0 0 (0%)
+- Số [LỖI]: 0 · số [CẢNH BÁO]: 1
+Kết quả: ĐẠT
+```
+
+Cảnh báo `000000213506.jpg #2` (nghi `lr_swap` cả người): giữ nguyên. Chị áo đen đứng nghiêng, mặt nhìn về phía trái ảnh nên bên trái của chị là bên gần camera; `left_*` nằm bên trái ảnh là đúng, không phải gán như người quay lưng.
+
+Lỗi đã biết khi review lại, chưa sửa do hết giờ:
+- 000000213506 #2: `right_elbow`, `right_wrist` đặt nhầm lên tay bé gái phía trước (`position`, đúng ra phải `O`).
+- 000000213506: thiếu người phụ nữ ở cửa sổ tầng trên (`missing`).
+- 000000213506 #1: hai điểm hông đặt hơi thấp (`position`).
+
+### B2 — 5 ảnh khuôn mặt đen trắng
+
+5/5 mặt, đủ 13 điểm. Ảnh không màu khó hơn ảnh màu ở chỗ: mép mí và khóe miệng không còn khác màu với da, chỉ còn dựa vào độ sáng tối nên dễ đặt mí dưới lệch xuống vùng bọng mắt; môi trên lẫn vào ria mép (face_274219 phải để hai khóe miệng là `v = 1`); ảnh cũ có hạt nhiễu (face_296417) làm mép mí bị nhòe. Về kính: ở face_317330 tròng kính tối nhưng vẫn nhìn xuyên thấy mắt nên tôi để `v = 2`. Với kính râm trên ảnh hồng ngoại, nhiều loại tròng cho tia hồng ngoại đi qua nên mắt thường vẫn thấy được → `v = 2`; chỉ khi tròng tối hẳn, không thấy mép mắt mới để `v = 1`.
+
+Lỗi đã biết, chưa sửa: face_317330 — ông cụ nhìn qua phía trên gọng kính, 4 điểm `left_eye_*` đặt trên mặt kính, thấp hơn mắt thật khoảng 30 px (`position`).
 
 ## 9. Tài liệu tham khảo và công cụ AI đã dùng
 
 - Tài liệu của lab: `README.md`, `RULES.md`, `CHECKPOINTS.md`, `docs/GUIDELINE.md`, `docs/CVAT_CHEATSHEET.md`, `docs/COCO_KEYPOINTS.md`.
-- Claude Code (trợ lý AI): giải thích quy tắc trái/phải và cờ visibility; chỉ ra lỗi trên ảnh chụp màn hình khi tôi tự review (vị trí vai, đổi trái/phải, cờ `v`); giải thích các `[CẢNH BÁO]` của `src/check_submission.py`; hỗ trợ trình bày các mục 0, 1, 2, 5, 8 từ dữ liệu xuất thật. Toàn bộ điểm trong hai job do tôi tự gán tay trên CVAT. Ở mục 3, 4, 7, nội dung (lỗi nào, cờ nào, lý do chọn, lỗi mắc nhiều nhất, đề xuất) là của tôi; AI chỉ hỗ trợ trình bày thành câu chữ và bảng. Ảnh `4_json_export.png` được dựng lại từ file JSON đã xuất.
+- Claude Code (trợ lý AI): giải thích quy tắc trái/phải và cờ visibility; chỉ ra lỗi trên ảnh chụp màn hình khi tôi tự review (vị trí vai, đổi trái/phải, cờ `v`); giải thích các `[CẢNH BÁO]` của `src/check_submission.py`; hỗ trợ trình bày các mục 0, 1, 2, 5, 8 từ dữ liệu xuất thật. Toàn bộ điểm trong hai job do tôi tự gán tay trên CVAT. Ở mục 3, 4, 7, nội dung (lỗi nào, cờ nào, lý do chọn, lỗi mắc nhiều nhất, đề xuất) là của tôi; AI chỉ hỗ trợ trình bày thành câu chữ và bảng. Ảnh `4_json_export.png` được dựng lại từ file JSON đã xuất. Phần Bonus: điểm B1, B2 do tôi tự gán tay; AI vẽ lại nhãn từ file xuất để chỉ ra lỗi và hỗ trợ trình bày bảng B1, đoạn nhận xét B2.

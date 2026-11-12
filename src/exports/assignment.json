@@ -38,6 +38,28 @@
    "task_id": 13,
    "job_id": 13,
    "task_name": "faces-DaoQuangTuan"
+  },
+  "persons-extra": {
+   "task_id": 14,
+   "job_id": 14,
+   "task_name": "persons-extra-DaoQuangTuan"
+  },
+  "faces-extra": {
+   "task_id": 15,
+   "job_id": 15,
+   "task_name": "faces-extra-DaoQuangTuan"
   }
- }
+ },
+ "persons_extra": [
+  "000000188948.jpg",
+  "000000213506.jpg",
+  "000000323525.jpg"
+ ],
+ "faces_extra": [
+  "face_274219.jpg",
+  "face_296417.jpg",
+  "face_317330.jpg",
+  "face_379585.jpg",
+  "face_507166.jpg"
+ ]
 }
